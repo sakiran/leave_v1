@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  kiransa-web-server:
+    build: "./docker/"
+    ports:
+      - 80:80
+      - 9000:9000
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:latest
+
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "adminpassword"
+      MYSQL_USER: "admin"
+      MYSQL_PASSWORD: "adminpassword"
+      MYSQL_DATABASE: "dbleave"
+      MYSQL_ROOT_HOST: "%"
+
+    volumes:
+      - ./mysqldata:/var/lib/mysql
+    ports:
+      - 3306:3306
